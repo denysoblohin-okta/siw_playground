@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Okta Sign-in Widget Playground (CDN bundle)</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="css/okta-sign-in.css" type="text/css" rel="stylesheet" />
+    <script src="js/okta-plugin-a11y.js"></script>
+  </head>
+
+  <body>
+    <div id="okta-login-container"></div>
+    <script src="js/okta-sign-in.debugger.min.js"></script>
+    <script nonce="playground">
+      window.OktaSignInDebug.init({
+        cspNonce: 'playground'
+      });
+    </script>
+    <script src="js/okta-sign-in.next.js"></script>
+    <script>
+      var config = {
+        el: '#okta-login-container',
+  baseUrl: 'https://denysoblohin-okta.github.io/siw_playground', 
+  redirectUri: 'https://denysoblohin-okta.github.io/siw_playground',
+  clientId: '0oa2aaeix4xTA0x1U0h8',
+  issuer: 'https://qa-priya-op1-oie.oktapreview.com/',
+  useInteractionCodeFlow: false,
+  authScheme: 'oauth2',
+
+        // OIE config
+        //stateToken: 'abc',
+
+        // Classic config
+        // stateToken: '00abc',
+        // useClassicEngine: true,
+        // features: {
+        //   router: false
+        // }
+      };
+      var signIn = new OktaSignIn(config);
+      window.signIn = signIn;
+      signIn.authClient.tokenManager.clear();
+      signIn.renderEl(
+        { el: '#okta-login-container' },
+        async function success(res) {
+          console.log(res);
+          alert('SUCCESS');
+          await signIn.authClient.revokeAccessToken();
+          signIn.authClient.closeSession();
+          // signIn.authClient.signOut({
+          //   clearTokensBeforeRedirect: true,
+          //   postLogoutRedirectUri: window.location.href
+          // });
+        },
+        function error(err) {
+          console.error('global error handler: ', err);
+          alert('ERROR');
+        }
+      );
+    </script>
+  </body>
+</html>
