@@ -36,7 +36,18 @@
         // }
       };
       var signIn = new OktaSignIn(config);
-      signIn.renderEl();
+      signIn.authClient.signOut();
+      signIn.renderEl(
+        { el: '#okta-login-container' },
+        function success(res) {
+          console.log(res);
+          alert('SUCCESS');
+        },
+        function error(err) {
+          console.error('global error handler: ', err);
+          alert('ERROR');
+        }
+      );
     </script>
   </body>
 </html>
