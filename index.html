@@ -38,12 +38,19 @@
         // }
       };
       var signIn = new OktaSignIn(config);
+      window.signIn = signIn;
       signIn.authClient.tokenManager.clear();
       signIn.renderEl(
         { el: '#okta-login-container' },
-        function success(res) {
+        async function success(res) {
           console.log(res);
           alert('SUCCESS');
+          await authClient.revokeAccessToken();
+          authClient.closeSession();
+          // signIn.authClient.signOut({
+          //   clearTokensBeforeRedirect: true,
+          //   postLogoutRedirectUri: window.location.href
+          // });
         },
         function error(err) {
           console.error('global error handler: ', err);
