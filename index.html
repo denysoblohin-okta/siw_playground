@@ -36,7 +36,9 @@
         // }
       };
       var signIn = new OktaSignIn(config);
-      signIn.authClient.signOut();
+      signIn.authClient.signOut({
+        postLogoutRedirectUri: window.location.href
+      });
       signIn.renderEl(
         { el: '#okta-login-container' },
         function success(res) {
