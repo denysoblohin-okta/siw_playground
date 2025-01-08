@@ -33374,26 +33374,7 @@ const FactorFactor = _BaseLoginModel.default.extend({
                 return self.get('rememberDevice');
               };
             }
-            let innerPromise;
-            if (_BrowserFeatures.default.isIOS()) {
-              let cancelRedundantPoll;
-              innerPromise = _q.default.race([trans.poll(options), (() => {
-                const _deferred = _q.default.defer();
-                cancelRedundantPoll = _Util.default.callAfterTimeoutOrWindowRefocus(_deferred.resolve, 2000, true);
-                return _deferred.promise.then(() => {
-                  if (!pollingHasStarted) {
-                    return trans.poll(options);
-                  }
-                  return _q.default.defer().promise; // never resolve this promise
-                });
-              })()]).then(result => {
-                cancelRedundantPoll();
-                return result;
-              });
-            } else {
-              innerPromise = trans.poll(options);
-            }
-            return innerPromise.then(function (trans) {
+            return trans.poll(options).then(function (trans) {
               self.options.appState.set('lastAuthResponse', trans.data);
               setTransaction(trans);
             });
