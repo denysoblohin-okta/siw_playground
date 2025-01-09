@@ -16,7 +16,7 @@
         cspNonce: 'playground'
       });
     </script>
-    <script src="js/okta-sign-in.min.js?v=2"></script>
+    <script src="js/okta-sign-in.min.js?v=3"></script>
     <script>
       var config = {
         el: '#okta-login-container',
@@ -45,13 +45,14 @@
         { el: '#okta-login-container' },
         async function success(res) {
           console.log(res);
-          alert('SUCCESS');
           await signIn.authClient.revokeAccessToken();
           signIn.authClient.closeSession();
           // signIn.authClient.signOut({
           //   clearTokensBeforeRedirect: true,
           //   postLogoutRedirectUri: window.location.href
           // });
+          signIn.remove();
+          document.body.append(JSON.stringify(res));
         },
         function error(err) {
           console.error('global error handler: ', err);
